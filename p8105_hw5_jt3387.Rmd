@@ -149,7 +149,7 @@ citys_ptest %>%
 
 ## Problem 3
 
-Create a function to save the estimated and p-value from the t-test, and apply it to a simulation containing 5000 datasets with $$\mu$$ = 0 by using `map` function.
+Create a function to save the estimated and p-value from the t-test, and apply it to a simulation containing 5000 datasets with $\mu$ = 0 by using `map` function.
 
 ```{r}
 ttest_tidy <- function(n_obs = 30, mu, sigma = 5) {
@@ -164,7 +164,7 @@ result_mu_0 <- expand_grid(mu = 0, iter = 1:5000) %>%
 result_mu_0
 ```
 
-Repeat the above for $$\mu$$ = {1,2,3,4,5,6}.
+Repeat the above for $\mu$ = {1,2,3,4,5,6}.
 
 ```{r}
 results_mus = expand_grid(mu = 1:6, iter = 1:5000) %>% 
@@ -173,7 +173,7 @@ results_mus = expand_grid(mu = 1:6, iter = 1:5000) %>%
 results_mus
 ```
 
-Make a plot to show the proportion of times the null was rejected (the power of the test) on the y axis and the true value of $$\mu$$ on the x axis.
+Make a plot to show the proportion of times the null was rejected (the power of the test) on the y axis and the true value of $\mu$ on the x axis.
 
 ```{r}
 results_allmu <- rbind(result_mu_0,results_mus)
@@ -192,7 +192,7 @@ results_allmu %>%
 
 - From the plot, we can see that the power increases as the true sample mean increases. More specifically, when the true mean is in a low level like 1, 2, 3, the power increases rapidly as the mean increases, and when the true mean equals to 4, 5, 6, the power increases slowly to 1 as the mean increases. Therefore, there is a positive relationship between the effect size and power.
 
-Make a plot showing the average estimate of $$\mu$$ on the y axis and the true value of $\mu$ on the x axis in all samples and in samples for which the null was rejected.
+Make a plot showing the average estimate of $\mu$ on the y axis and the true value of $\mu$ on the x axis in all samples and in samples for which the null was rejected.
 
 ```{r}
 hat_mu_all <- results_allmu %>% 
