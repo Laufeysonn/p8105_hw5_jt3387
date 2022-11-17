@@ -192,3 +192,28 @@ results_allmu %>%
 ```
 
 - From the plot, we can see that the power increases as the true sample mean increases, so there is a positive relationship between the effect size and power.
+
+Make a plot showing the average estimate of \mu on the y axis and the true value of \mu on the x axis in all samples and in samples for which the null was rejected.
+
+```{r}
+hat_mu_all <- results_allmu %>% 
+  group_by(mu) %>% 
+  summarize(hat_mu = mean(estimate))
+hat_mu_rej <- results_allmu %>% 
+  filter(p.value < 0.05) %>% 
+  group_by(mu) %>% 
+  summarize(hat_mu = mean(estimate))
+ggplot(hat_mu_all, aes(x = mu, y = hat_mu, color = 'blue')) +
+  geom_point() +
+  geom_point(data = hat_mu_rej, aes(x = mu, y = hat_mu, color = 'red')) +
+  scale_color_manual(name = 'sample type',
+                     values = c("blue", "red"),
+                     labels = c('All sample','rejected sample')) +
+  labs(title = "Average Mean Estimate by True Mean",
+       x = "True Mean",
+       y = "Average Mean Esimate")
+```
+
+- From the plot, we can see that the sample average of \hat｛\mu｝ across tests for which the null is rejected is approximately equal to the true value of \mu when the true mean equals to 0, 4, 5, and 6, while they are not approximately equal to each other when the true mean equals to 1, 2, and 3.
+
+- The estimated \mu in non-reject sample is basically small, and the estimated \mu in reject sample is relatively bigger. When \mu = 0, there will be few reject null samples due to the random error, so the estimated \mu is very similar to the true mean. When \mu = 1, 2, 3, the effect size and null rejection proportion (power) is small, so the reject sample is not a big part of the whole sample. Therefore, when we get rid of the non-reject sample, the \mu in the reject sample is going to get bigger. When \mu = 4, 5, 6, the effect size and null rejection proportion (power) is big, so the reject sample is a big part of the whole sample. Therefore, the \mu in the reject sample are similar to the true mean after getting rid of the non-reject sample.
