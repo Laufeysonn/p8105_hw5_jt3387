@@ -149,7 +149,7 @@ citys_ptest %>%
 
 ## Problem 3
 
-Create a function to save the estimated and p-value from the t-test, and apply it to a simulation containing 5000 datasets with \mu = 0 by using `map` function.
+Create a function to save the estimated and p-value from the t-test, and apply it to a simulation containing 5000 datasets with $$\mu$$ = 0 by using `map` function.
 
 ```{r}
 ttest_tidy <- function(n_obs = 30, mu, sigma = 5) {
@@ -164,7 +164,7 @@ result_mu_0 <- expand_grid(mu = 0, iter = 1:5000) %>%
 result_mu_0
 ```
 
-Repeat the above for \mu = {1,2,3,4,5,6}.
+Repeat the above for $$\mu$$ = {1,2,3,4,5,6}.
 
 ```{r}
 results_mus = expand_grid(mu = 1:6, iter = 1:5000) %>% 
@@ -173,7 +173,7 @@ results_mus = expand_grid(mu = 1:6, iter = 1:5000) %>%
 results_mus
 ```
 
-Make a plot to show the proportion of times the null was rejected (the power of the test) on the y axis and the true value of \mu on the x axis.
+Make a plot to show the proportion of times the null was rejected (the power of the test) on the y axis and the true value of $$\mu$$ on the x axis.
 
 ```{r}
 results_allmu <- rbind(result_mu_0,results_mus)
@@ -192,7 +192,7 @@ results_allmu %>%
 
 - From the plot, we can see that the power increases as the true sample mean increases. More specifically, when the true mean is in a low level like 1, 2, 3, the power increases rapidly as the mean increases, and when the true mean equals to 4, 5, 6, the power increases slowly to 1 as the mean increases. Therefore, there is a positive relationship between the effect size and power.
 
-Make a plot showing the average estimate of \mu on the y axis and the true value of \mu on the x axis in all samples and in samples for which the null was rejected.
+Make a plot showing the average estimate of $$\mu$$ on the y axis and the true value of $\mu$ on the x axis in all samples and in samples for which the null was rejected.
 
 ```{r}
 hat_mu_all <- results_allmu %>% 
@@ -215,6 +215,6 @@ ggplot(hat_mu_all, aes(x = mu, y = hat_mu, color = 'blue')) +
        y = "Average Estimate Mean")
 ```
 
-- From the plot, we can see that the sample average of estimated \mu across tests for which the null is rejected is approximately equal to the true value of \mu when the true mean equals to 0, 4, 5, and 6, while they are not approximately equal to each other when the true mean equals to 1, 2, and 3.
+- From the plot, we can see that the sample average of estimated $\mu$ across tests for which the null is rejected is approximately equal to the true value of $\mu$ when the true mean equals to 0, 4, 5, and 6, while they are not approximately equal to each other when the true mean equals to 1, 2, and 3.
 
-- The estimated \mu in non-reject sample is basically small, and the estimated \mu in reject sample is relatively bigger. When \mu = 0, there will be few reject null samples due to the random error, so the estimated \mu is very similar to the true mean. When \mu = 1, 2, 3, the effect size and null rejection proportion (power) is small, so the reject null sample is not a big part of the whole sample. Therefore, when we get rid of the non-reject sample, the \mu in the reject null sample is going to get bigger. When \mu = 4, 5, 6, the effect size and null rejection proportion (power) is big, so the reject null sample is a big part of the whole sample. Therefore, the \mu in the reject null sample are similar to the true mean after getting rid of the non-reject sample.
+- The estimated $\mu$ in non-reject sample is basically small, and the estimated $\mu$ in reject sample is relatively bigger. When $\mu$ = 0, there will be few reject null samples due to the random error, so the estimated $\mu$ is very similar to the true mean. When $\mu$ = 1, 2, 3, the effect size and null rejection proportion (power) is small, so the reject null sample is not a big part of the whole sample. Therefore, when we get rid of the non-reject sample, the $\mu$ in the reject null sample is going to get bigger. When $\mu$ = 4, 5, 6, the effect size and null rejection proportion (power) is big, so the reject null sample is a big part of the whole sample. Therefore, the $\mu$ in the reject null sample are similar to the true mean after getting rid of the non-reject sample.
