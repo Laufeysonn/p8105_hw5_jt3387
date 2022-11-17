@@ -85,4 +85,19 @@ Description of the raw data:
 
 - The key variables are: `uid` represents the identity of every record, `reported_data` represents the date when the homicide was reported, `victim_last` and `victim_first` show the last and first name of the victim, `victim_race`, `victime_age`, `victim_sex` show the race, age, and gender of the victim, `city` and `state` represents which city and state the homicide happened, `lat` and `lon` represent the latitude and longitude coordinates of the homicide, `disposition` represents the result of the homicide.
 
-- `victim_age` is a character variable, and there are NA and `unknown` values in it. I'll invert it into numeric. There are also NAs in `lat` and `lon` variables. There is a row with Tulsa as city and AL as state seems to have an error, so I'll remove this row.
+- `victim_age` is a character variable, and there are NAs and `unknown` values in it. I'll invert it into numeric. There are also NAs in `lat` and `lon` variables. There is a row with Tulsa as city and AL as state seems to have an error, so I'll remove this row.
+
+Create the `city_state` variable.
+
+```{r warning = FALSE}
+homicide <- homicide_raw %>% 
+  mutate(victim_age = as.numeric(victim_age),
+         city_state = paste(city, state, sep = ", "))
+homicide_city <- homicide %>% 
+  group_by(city_state) %>% 
+  summarize(total_homicide = n(),
+            unsolved_homicide = sum(disposition == "Closed without arrest" | 
+                                      disposition == "Open/No arrest")) %>% 
+  filter(city_state != "Tulsa, AL")
+homicide_city %>% knitr::kable() 
+```
