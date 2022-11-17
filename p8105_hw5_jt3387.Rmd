@@ -148,3 +148,20 @@ citys_ptest %>%
 ```
 
 From the plot, we can see that Richmond, VA has the lowest rate of unsolved homicides and Chicago, IL has the highest rate among these 50 cities.
+
+## Problem 3
+
+Create a function to save the estimated mean and the p-value from the t-test, and apply it to a simulation containing 5000 times t-test with \mu = 0 by using `map` function.
+
+```{r}
+ttest_simulation <- function(n_obs = 30, mu, sigma = 5) {
+  x <- rnorm(n = n_obs, mean = mu, sd = sigma)
+  result <- t.test(x) %>% 
+    broom::tidy() %>% 
+    select(estimate, p.value)
+}
+result_mu_0 <- expand_grid(mu = 0, iter = 1:5000) %>% 
+  mutate(test_result = map(.x = mu, ~ttest_simulation(mu = .x))) %>% 
+  unnest(test_result)
+head(result_mu_0, 10)
+```
