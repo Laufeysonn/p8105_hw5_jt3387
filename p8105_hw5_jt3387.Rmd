@@ -101,3 +101,34 @@ homicide_city <- homicide %>%
   filter(city_state != "Tulsa, AL")
 homicide_city %>% knitr::kable() 
 ```
+
+Use the `prop.test` function to estimate the proportion of homicides that are unsolved for Baltimore, MD.
+
+```{r}
+baltimore_df <- homicide_city %>%
+  filter(city_state == "Baltimore, MD") 
+baltimore_test <- prop.test(x = baltimore_df$unsolved_homicide, 
+                            n = baltimore_df$total_homicide) %>%
+  broom::tidy() 
+baltimore_test %>%
+  select(estimate, conf.low, conf.high) %>% 
+  knitr::kable()
+```
+
+- From the test result, we can see that the proportion of homicides which were unsolved was around 64.6% in Baltimore, MD, and the 95 percent confidence interval is [0.6276, 0.6632].
+
+Run prop.test for each of the cities in the data set.
+
+```{r}
+ptest_tidy <- function(x, n){
+  result <- prop.test(x = x, n = n) %>% 
+    broom::tidy() %>% 
+    select(estimate, conf.low, conf.high)
+  result
+}
+citys_ptest <- homicide_city %>%
+  mutate(result_df = purrr::map2(unsolved_homicide, total_homicide, 
+                                 ~ptest_tidy(x = .x, n = .y))) %>% 
+  unnest(result_df)
+citys_ptest %>% knitr::kable() 
+```
