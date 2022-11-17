@@ -132,3 +132,19 @@ citys_ptest <- homicide_city %>%
   unnest(result_df)
 citys_ptest %>% knitr::kable() 
 ```
+
+Create a plot that shows the estimates and CIs for each city.
+
+```{r}
+citys_ptest %>% 
+  mutate(city_state = fct_reorder(city_state, estimate)) %>% 
+  ggplot(aes(x = city_state, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) +
+  labs(title = "Proportion and 95%CI of Unsolved Homicides by City in USA",
+       x = "City, State",
+       y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+From the plot, we can see that Richmond, VA has the lowest rate of unsolved homicides and Chicago, IL has the highest rate among these 50 cities.
