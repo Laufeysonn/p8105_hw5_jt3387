@@ -71,3 +71,18 @@ tidy_df %>%
 
 This plot suggests high within-subject correlation -- subjects who start above average end up above average, and those that start below average end up below average. Subjects in the control group generally don't change over time, but those in the experiment group increase their outcome in a roughly linear way.
 
+## Problem 2
+
+Load the data.
+
+```{r message = FALSE}
+homicide_raw <- read_csv("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv")
+```
+
+Description of the raw data:
+  
+  - The data set contain `r nrow(homicide_raw)` observations and `r ncol(homicide_raw)` variables.
+
+- The key variables are: `uid` represents the identity of every record, `reported_data` represents the date when the homicide was reported, `victim_last` and `victim_first` show the last and first name of the victim, `victim_race`, `victime_age`, `victim_sex` show the race, age, and gender of the victim, `city` and `state` represents which city and state the homicide happened, `lat` and `lon` represent the latitude and longitude coordinates of the homicide, `disposition` represents the result of the homicide.
+
+- `victim_age` is a character variable, and there are NA and `unknown` values in it. I'll invert it into numeric. There are also NAs in `lat` and `lon` variables. There is a row with Tulsa as city and AL as state seems to have an error, so I'll remove this row.
