@@ -174,3 +174,21 @@ results_mus = expand_grid(mu = 1:6, iter = 1:5000) %>%
   unnest(test_result)
 head(results_mus, 10)
 ```
+
+Make a plot to show the proportion of times the null was rejected (the power of the test) on the y axis and the true value of \mu on the x axis.
+
+```{r}
+results_allmu <- rbind(result_mu_0,results_mus)
+results_allmu %>%
+  group_by(mu) %>%
+  summarise(rej_null_no = sum(p.value < 0.05),
+            sim_no = n()) %>%
+  mutate(rej_null_prop = rej_null_no / sim_no)  %>% 
+  ggplot(aes(x = mu, y = rej_null_prop)) + 
+  geom_point() + 
+  labs(title = "Null Hypothesis Rejection Proportion and True Mean",
+       x = "True Mean",
+       y = "Null Rejection Proportion(Power of Test)")
+```
+
+- From the plot, we can see that the power increases as the true sample mean increases, so there is a positive relationship between the effect size and power.
